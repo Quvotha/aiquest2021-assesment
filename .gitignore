@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+##################### Custom setting #####################
+# Competition data
+input/
+
+# Experiment output
+experiments/*/
