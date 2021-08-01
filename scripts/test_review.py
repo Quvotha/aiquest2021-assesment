@@ -19,7 +19,7 @@ class TestReview(unittest.TestCase):
             output = Review.cleanse_host_response_rate(input)
             self.assertEqual(expected, output, (input, expected, output))
 
-        expected = None
+        expected = np.nan
         output = Review.cleanse_host_response_rate(np.nan)
         self.assertIs(expected, output, output)
 
@@ -38,6 +38,33 @@ class TestReview(unittest.TestCase):
                 'average_number_of_reviews': [100. / 9, 2.5, 20., 8.],
                 'number_of_host_response': [25., 25., 200., 0.],
                 'average_number_of_host_response': [25./9, 1.25, 20., 0.]
+
+            }
+        )
+        output = Review.extract_review_feature(input)
+        self.assertIsNone(pd.testing.assert_frame_equal(expected, output))
+
+        input = input.rename(columns={'first_review': 'host_since'})
+        output = Review.extract_review_feature(input, first_date_column='host_since')
+        self.assertIsNone(pd.testing.assert_frame_equal(expected, output))
+
+    def test_issue6(self):
+        # `first_review` と `last_review` は同じ日付
+        # この時 `days_between_first_last` は =1 とする
+        input = pd.DataFrame(
+            {
+                'first_review': ['2000-01-01', '2000-01-02'],
+                'last_review': ['2000-01-01', '2000-01-02'],
+                'number_of_reviews': [100, 50],
+                'host_response_rate': [0.25, 0.5]
+            }
+        )
+        expected = pd.DataFrame(
+            {
+                'days_between_first_last': [1, 1],
+                'average_number_of_reviews': [100., 50.],
+                'number_of_host_response': [25., 25.],
+                'average_number_of_host_response': [25., 25.]
 
             }
         )

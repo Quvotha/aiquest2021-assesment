@@ -1,5 +1,6 @@
 from typing import Any, Union
 
+import numpy as np
 import pandas as pd
 
 
@@ -20,12 +21,12 @@ class Review(object):
             Float if convertable, otherwise None.
         """
         if not isinstance(host_response_rate, str):
-            return None
+            return np.nan
         try:
             response_rate = float(host_response_rate[:-1])
             return response_rate
         except TypeError:
-            return None
+            return np.nan
 
     @staticmethod
     def extract_review_feature(
@@ -51,6 +52,7 @@ class Review(object):
         df['last_review'] = pd.to_datetime(df['last_review'])
         review_feature['days_between_first_last'] = (df['last_review'] - df[first_date_column]) \
             .dt.days
+        review_feature['days_between_first_last'].replace(0, 1, inplace=True)  # Issue 6
         review_feature['average_number_of_reviews'] = (
             df['number_of_reviews'] / review_feature['days_between_first_last']
         )
