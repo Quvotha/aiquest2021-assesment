@@ -135,5 +135,8 @@ input/
 # Experiment output
 experiments/*/
 
+features/*
+eda/*
+
 # Configuration file
 config.ini
