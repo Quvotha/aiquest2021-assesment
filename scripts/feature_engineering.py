@@ -1,7 +1,8 @@
 from itertools import chain
 import logging
 import os
-from typing import Tuple
+from pydoc import text
+from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -10,6 +11,7 @@ import pandas as pd
 from amenities import Amenities
 from logging_util import timer
 from review import Review
+from text_feature_extraction import make_or_load_vector
 from zipcode import ZipCodePreprocessor
 
 FLAG_COLUMNS = ['cleaning_fee', 'host_has_profile_pic',
@@ -185,3 +187,35 @@ def make_or_load_features(train: pd.DataFrame, test: pd.DataFrame,
         train.to_csv(train_path, index=False)
         test.to_csv(test_path, index=False)
     return train, test
+
+
+def make_or_load_name_vector(train: pd.DataFrame,
+                             test: pd.DataFrame,
+                             feature_dir: str,
+                             logger: logging.Logger,
+                             embedder: str,
+                             random_state: int = 1) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    return make_or_load_vector(train=train,
+                               test=test,
+                               feature_dir=feature_dir,
+                               logger=logger,
+                               text_column='name',
+                               embedder=embedder,
+                               vector_size=100,
+                               random_state=random_state)
+
+
+def make_or_load_description_vector(train: pd.DataFrame,
+                                    test: pd.DataFrame,
+                                    feature_dir: str,
+                                    logger: logging.Logger,
+                                    embedder: str,
+                                    random_state: int = 1) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    return make_or_load_vector(train=train,
+                               test=test,
+                               feature_dir=feature_dir,
+                               logger=logger,
+                               text_column='description',
+                               embedder=embedder,
+                               vector_size=200,
+                               random_state=random_state)
