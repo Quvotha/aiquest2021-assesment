@@ -140,6 +140,8 @@ features/*
 
 # EDA output
 eda/*
+!eda/Post processing 検討.ipynb
+!eda/over_200_or_not_amenities.html
 
 # Configuration file
 config.ini
