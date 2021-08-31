@@ -6,10 +6,10 @@
 
 # Solution
 
-コードは全て Python. コードは [05-07.ipynb](experiments\05-07.ipynb) を参照。
+コードは全て Python (3.7.0). コードは [05-07.ipynb](experiments/05-07.ipynb) を参照。
 
 ## Preprocessing
-前処理の大半は [feature_engineering.py](scripts\feature_engineering.py) で行われる。
+前処理の大半は [feature_engineering.py](scripts/feature_engineering.py) で行われる。
 
 - `amenities`  
   半角カンマ区切りで列挙されているアメニティを全て抽出し train.csv と test.csv の両方に登場するものを対象に One-Hot encoding し PCA で次元削減を行った。
